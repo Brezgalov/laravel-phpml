@@ -26,16 +26,16 @@
 				</select>
 			</div>
 			<div class="form-unit">
-				<a id="use-defaults">Свои данные</a>
+				<a id="use-defaults" data-default="1" data-text="Данные по умолчанию">Свои данные</a>
 			</div>
-			<div class="form-unit" class="disabled">
+			<div class="form-unit def disabled">
 				<label for="month-select">
 					Файл для обучения
 				</label>
 				<input type="file" id="learning-file" style="display: none;" disabled />
 				<input type="button" value="Загрузить" onclick="$('#learning-file').click();" disabled />
 			</div>
-			<div class="form-unit" class="disabled">
+			<div class="form-unit def disabled">
 				<label for="testing-file">
 					Файл для тестирования
 				</label>
@@ -52,91 +52,8 @@
 	</section>
 </div>
 
-<style>
-	.form-unit {
-		text-align: center;
-		max-width: 180px;
-		width: 13%;
-		display: inline-block;
-	}
-	.form-unit > * {
-		display: block;
-		width: 100%;
-	}
-	section#chart {
-		overflow-x: hidden;
-		margin-bottom: 100px;
-		border: 2px solid black;
-		border-radius: 5px;
-		padding: 10px;
-	}
-</style>
+<link href="{!! asset('css/app.css') !!}" media="all" rel="stylesheet" type="text/css" />
 
-<!--<link href="{!! asset('css/all.css') !!}" media="all" rel="stylesheet" type="text/css" />-->
 <script src="{!! asset('js/jquery/jquery-3.2.1.min.js') !!}"></script>
 <script src="{!! asset('js/chartJs/Chart.js') !!}"></script>
-<script>
-	$('#draw-chart').on('click', function(){
-		$.ajax({
-			url: '/chart',
-			method: 'post',
-			dataType: 'json',
-			data: {
-				_token: $('input[name="_token"]').val()
-			},
-			success: function(data) { 
-				console.log(data);
-				var ctx = document.getElementById("chartJSContainer").getContext("2d");
-				window.myScatter = new Chart(ctx, {
-				    type: 'scatter',
-				    data: {
-				        datasets: [
-					        {
-					        	pointRadius: 1,
-				        		pointBorderColor: 'red',
-				        		borderColor: 'rgba(0,0,0,0)',
-					            backgroundColor: 'rgba(0,0,0,0)',
-					            label: '',
-					            data: data.inputCoords
-					        },
-					        {
-					        	pointRadius: 1,
-				        		pointBorderColor: 'blue',
-				        		borderColor: 'blue',
-					            backgroundColor: 'rgba(0,0,0,0)',
-					            label: '',
-					            data: data.predictCoords
-					        }
-				        ]
-				    },
-				    options: {
-				    	legend: {
-				            display: false
-				        },
-				        scales: {
-				        	xAxes: [{
-				                scaleLabel: {
-							    	display: true,
-								    labelString: 'Кол-во минут прошедшее со времени 00:00'
-							  	},
-							  	ticks: {
-			                        beginAtZero: true,
-			                        max: 1440
-			                    }
-				            }],
-				            yAxes: [{
-				                scaleLabel: {
-							    	display: true,
-								    labelString: 'Нагрузка'
-							  	}
-				            }]
-				        }
-				    }
-				});
-			},
-			error: function(data) {
-				console.log(data);
-			}
-		});
-	});
-</script>
+<script src="{!! asset('js/app.js') !!}"></script>
