@@ -26,13 +26,25 @@
 				</select>
 			</div>
 			<div class="form-unit">
+				<a id="use-defaults">Свои данные</a>
+			</div>
+			<div class="form-unit" class="disabled">
 				<label for="month-select">
 					Файл для обучения
 				</label>
-				<input type="file" id="learning-file" style="display: none;" />
-				<input type="button" value="Загрузить" onclick="$('#learning-file').click();" />
+				<input type="file" id="learning-file" style="display: none;" disabled />
+				<input type="button" value="Загрузить" onclick="$('#learning-file').click();" disabled />
 			</div>
-			<a id="draw-chart" href="/#chart">Построить модель</a>
+			<div class="form-unit" class="disabled">
+				<label for="testing-file">
+					Файл для тестирования
+				</label>
+				<input type="file" id="testing-file" style="display: none;" disabled />
+				<input type="button" value="Загрузить" onclick="$('#testing-file').click();" disabled />
+			</div>
+			<div class="form-unit">
+				<a id="draw-chart" href="/#chart">Построить модель</a>
+			</div>
 		</form>
 	</section>
 	<section id="chart">
@@ -42,8 +54,9 @@
 
 <style>
 	.form-unit {
-		max-width: 150px;
-		width: 10%;
+		text-align: center;
+		max-width: 180px;
+		width: 13%;
 		display: inline-block;
 	}
 	.form-unit > * {
