@@ -7,22 +7,22 @@
 					Выбор Дня
 				</label>
 				<select id="day-select">
-					<option id="Sunday" selected>Воскресенье</option>
-					<option id="Monday">Понедельник</option>
-					<option id="Tuesday">Вторник</option>
-					<option id="Wednesday">Среда</option>
-					<option id="Thursday">Четверг</option>
-					<option id="Friday">Пятница</option>
-					<option id="Saturday">Суббота</option>
+					<option value="Sunday">Воскресенье</option>
+					<option value="Monday">Понедельник</option>
+					<option value="Tuesday">Вторник</option>
+					<option value="Wednesday">Среда</option>
+					<option value="Thursday">Четверг</option>
+					<option value="Friday">Пятница</option>
+					<option value="Saturday" selected >Суббота</option>
 				</select>
 			</div>
 			<div class="form-unit">
-				<label for="month-select">
+				<label for="src-select">
 					Данные по
 				</label>
-				<select id="month-select">
-					<option id="sources" selected>Источникам</option>
-					<option id="clients">Клиентам</option>
+				<select id="src-select">
+					<option value="sources" selected>Источникам</option>
+					<option value="clients">Клиентам</option>
 				</select>
 			</div>
 			<div class="form-unit">

@@ -38,6 +38,8 @@ $('#draw-chart').on('click', function(){
 		method: 'post',
 		dataType: 'json',
 		data: {
+			day: $('#day-select').val(),
+			src: $('#src-select').val(),
 			_token: $('input[name="_token"]').val()
 		},
 		success: function(data) { 
@@ -77,6 +79,7 @@ $('#draw-chart').on('click', function(){
 						  	},
 						  	ticks: {
 		                        beginAtZero: true,
+		                        min: 0,
 		                        max: 1440
 		                    }
 			            }],
@@ -84,7 +87,11 @@ $('#draw-chart').on('click', function(){
 			                scaleLabel: {
 						    	display: true,
 							    labelString: 'Нагрузка'
-						  	}
+						  	},
+						  	ticks: {
+		                        beginAtZero: true,
+		                        min: 0
+		                    }
 			            }]
 			        }
 			    }
