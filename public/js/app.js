@@ -40,6 +40,7 @@ $('#draw-chart').on('click', function(){
 		data: {
 			day: $('#day-select').val(),
 			src: $('#src-select').val(),
+			length: $('#length-select').val(),
 			_token: $('input[name="_token"]').val()
 		},
 		success: function(data) { 

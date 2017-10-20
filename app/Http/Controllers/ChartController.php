@@ -14,13 +14,14 @@ class ChartController extends Controller
 
         $day = $data['day'];
         $src = $data['src'];
+        $length = $data['length'];
 
     	//@TODO: remove hardcode
     	$predictInputData = $this->getPredictInputFile('/json/test-log-500.json');
     	$inputCoords = $this->getCoordsFromInput($predictInputData, $day, 'sources');
     	//$predictCoords = LeastSquaresHelper::getPredictCoords($predictInputData, $day, 'sources', 0, 1440, 1);
 
-        $test = new LeastSquaresModel($predictInputData, 50);
+        $test = new LeastSquaresModel($predictInputData, $length);
         $test->train('Saturday', 'sources', 0, 500, 1, true);
         $predictCoords = $test->getOutput();
 

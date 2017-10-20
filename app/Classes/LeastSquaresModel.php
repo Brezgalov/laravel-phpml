@@ -1,6 +1,8 @@
 <?php  namespace App\Classes;
 
 use Phpml\Regression\LeastSquares;
+use Phpml\Regression\SVR;
+use Phpml\SupportVectorMachine\Kernel;
 
 class LeastSquaresModel {
 	protected $input;
