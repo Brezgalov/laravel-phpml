@@ -17,12 +17,13 @@ class ChartController extends Controller
         $length = $data['length'];
 
     	//@TODO: remove hardcode
-    	$predictInputData = $this->getPredictInputFile('/json/test-log-500.json');
+    	$predictInputData = $this->getPredictInputFile('/json/test-log-1440.json');
+        //dd($predictInputData);
     	$inputCoords = $this->getCoordsFromInput($predictInputData, $day, 'sources');
     	//$predictCoords = LeastSquaresHelper::getPredictCoords($predictInputData, $day, 'sources', 0, 1440, 1);
 
         $test = new LeastSquaresModel($predictInputData, $length);
-        $test->train('Saturday', 'sources', 0, 500, 1, true);
+        $test->train('Saturday', 'sources', 0, 1440, 1, true);
         $predictCoords = $test->getOutput();
 
     	return json_encode([

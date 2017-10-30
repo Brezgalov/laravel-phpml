@@ -3,8 +3,13 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Phpml\Regression\LeastSquares;
-use App\Classes\LeastSquaresModel;
+
+// use Phpml\Regression\LeastSquares;
+// use App\Classes\LeastSquaresModel;
+
+use MCordingley\Regression\Algorithm\LeastSquares;
+use MCordingley\Regression\Observations;
+use MCordingley\Regression\Predictor\Linear;
 
 class test extends Command
 {
@@ -46,9 +51,20 @@ class test extends Command
         // $regression->train($samples, $targets);
         // dd($regression->predict([6]));
 
-        $predictInputData = json_decode(file_get_contents(public_path().'/json/test-log-1440.json'), true);
-        $test = new LeastSquaresModel($predictInputData, 10);
-        $test->train('Saturday', 'sources', 0, 1440, 1, true);
-        dd($test->getOutput()[52], $test->getPredict(52));
+        // $predictInputData = json_decode(file_get_contents(public_path().'/json/test-log-1440.json'), true);
+        // $test = new LeastSquaresModel($predictInputData, 10);
+        // $test->train('Saturday', 'sources', 0, 1440, 1, true);
+        // dd($test->getOutput()[52], $test->getPredict(52));
+
+        // Load the data
+        $observations = Observations::fromArray([[1], [1], [1], [2], [2]], [5, 10, 15, 12, 9]);
+
+        $algorithm = new LeastSquares;
+        $coefficients = $algorithm->regress($observations);
+
+        $predictor = new Linear($coefficients);
+        $predictedOutcome = $predictor->predict(array_merge([1.0], [1]));
+
+        dd($predictedOutcome);
     }
 }
