@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 // use Phpml\Regression\LeastSquares;
-// use App\Classes\LeastSquaresModel;
+use App\Classes\LeastSquaresModel;
 
 use MCordingley\Regression\Algorithm\LeastSquares;
 use MCordingley\Regression\Observations;
@@ -56,14 +56,28 @@ class test extends Command
         // $test->train('Saturday', 'sources', 0, 1440, 1, true);
         // dd($test->getOutput()[52], $test->getPredict(52));
 
+        $predictInputData = json_decode(file_get_contents(public_path().'/json/new-log.json'), true);
+        $test = new LeastSquaresModel($predictInputData, 5);
+        $test->trainAdvanced('Saturday', 'clients', 0, 10, true);
+        $res = $test->getOutput();
+        dd('test', $predictInputData, $res);
+
         // Load the data
-        $observations = Observations::fromArray([[1], [1], [1], [2], [2]], [5, 10, 15, 12, 9]);
+        $observations = new Observations();
+        $merger = [1.0];
+        $observations->add(array_merge($merger, [5.0]), 1.0);
+        $observations->add(array_merge($merger, [6.0]), 2.0);
+        $observations->add(array_merge($merger, [5.0]), 1.0);
+        $observations->add(array_merge($merger, [6.0]), 2.0);
 
         $algorithm = new LeastSquares;
         $coefficients = $algorithm->regress($observations);
 
         $predictor = new Linear($coefficients);
-        $predictedOutcome = $predictor->predict(array_merge([1.0], [1]));
+        $predictedOutcome = $predictor->predict(array_merge($merger, [6.0]));
+
+        //$gatherer = new Linear($observations, $coefficients, $predictor);
+        //$a = $gatherer->getFStatistic();
 
         dd($predictedOutcome);
     }

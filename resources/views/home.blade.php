@@ -43,29 +43,12 @@
 					<a id="draw-chart" href="/#chart">Построить модель</a>
 				</div>
 			</div>
-			<div class="form-row">
-				<div class="form-unit def disabled">
-					<label for="month-select">
-						Файл для обучения
-					</label>
-					<input type="file" id="learning-file" style="display: none;" disabled />
-					<input type="button" value="Загрузить" onclick="$('#learning-file').click();" disabled />
-				</div>
-				<div class="form-unit def disabled">
-					<label for="testing-file">
-						Файл для тестирования
-					</label>
-					<input type="file" id="testing-file" style="display: none;" disabled />
-					<input type="button" value="Загрузить" onclick="$('#testing-file').click();" disabled />
-				</div>
-				<div class="form-unit">
-					<a id="use-defaults" data-default="1" data-text="Данные по умолчанию">Свои данные</a>
-				</div>
-			</div>
 		</form>
 	</section>
 	<section id="chart">
-		<canvas id="chartJSContainer" width="2500" height="500"></canvas>
+		<div class="chart-wrapper">
+			<canvas id="chartJSContainer" width="2500" height="500"></canvas>
+		</div>
 	</section>
 </div>
 

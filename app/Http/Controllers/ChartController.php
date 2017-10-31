@@ -17,13 +17,11 @@ class ChartController extends Controller
         $length = $data['length'];
 
     	//@TODO: remove hardcode
-    	$predictInputData = $this->getPredictInputFile('/json/test-log-1440.json');
-        //dd($predictInputData);
-    	$inputCoords = $this->getCoordsFromInput($predictInputData, $day, 'sources');
-    	//$predictCoords = LeastSquaresHelper::getPredictCoords($predictInputData, $day, 'sources', 0, 1440, 1);
+    	$predictInputData = $this->getPredictInputFile('/json/test-log-1-1440.json');
+    	$inputCoords = $this->getCoordsFromInput($predictInputData, $day, $src);
 
         $test = new LeastSquaresModel($predictInputData, $length);
-        $test->train('Saturday', 'sources', 0, 1440, 1, true);
+        $test->trainAdvanced('Saturday', $src, 0, 1440, true);
         $predictCoords = $test->getOutput();
 
     	return json_encode([
@@ -39,14 +37,16 @@ class ChartController extends Controller
     private function getCoordsFromInput($input, $day, $src) {
         $coords = [];
 
-        foreach ($input[$day][$src]['load'] as $key => $value) {
-            array_push(
-                $coords, 
-                [
-                    'x' => $input[$day][$src]['time'][$key],
-                    'y' => $value,
-                ]
-            );
+        foreach ($input[$day][$src] as $time => $loads) {
+            foreach ($loads as $value) {
+                array_push(
+                    $coords, 
+                    [
+                        'x' => $time,
+                        'y' => $value,
+                    ]
+                );
+            }
         }
 
         return $coords;

@@ -46,10 +46,22 @@ $('#draw-chart').on('click', function(){
 		success: function(data) { 
 			console.log(data);
 			var ctx = document.getElementById("chartJSContainer").getContext("2d");
+			// var ctx = document.getElementById("chart1").getContext("2d");
+			if (window.myScatter && window.myScatter.destroy){
+				window.myScatter.destroy();
+			}
 			window.myScatter = new Chart(ctx, {
 			    type: 'scatter',
 			    data: {
 			        datasets: [
+			        	{
+				        	pointRadius: 1,
+			        		pointBorderColor: 'blue',
+			        		borderColor: 'blue',
+				            backgroundColor: 'rgba(0,0,0,0)',
+				            label: '',
+				            data: data.predictCoords
+				        },
 				        {
 				        	pointRadius: 1,
 			        		pointBorderColor: 'red',
@@ -57,14 +69,6 @@ $('#draw-chart').on('click', function(){
 				            backgroundColor: 'rgba(0,0,0,0)',
 				            label: '',
 				            data: data.inputCoords
-				        },
-				        {
-				        	pointRadius: 1,
-			        		pointBorderColor: 'blue',
-			        		borderColor: 'blue',
-				            backgroundColor: 'rgba(0,0,0,0)',
-				            label: '',
-				            data: data.predictCoords
 				        }
 			        ]
 			    },

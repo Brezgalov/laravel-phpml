@@ -4,6 +4,10 @@ use Phpml\Regression\LeastSquares;
 use Phpml\Regression\SVR;
 use Phpml\SupportVectorMachine\Kernel;
 
+use MCordingley\Regression\Algorithm\LeastSquares as MCLeastSquares;
+use MCordingley\Regression\Observations;
+use MCordingley\Regression\Predictor\Linear;
+
 class LeastSquaresModel {
 	protected $input;
 	protected $output;
@@ -18,6 +22,55 @@ class LeastSquaresModel {
         	$this->sectionSize = $sectionSize;
         }
 		$this->input = $input;
+	}
+
+	public function trainAdvanced($day, $src, $left, $right, $verbose) {
+		$inputCash = array_slice($this->input[$day][$src], $left, $right);
+		$this->predict = [];
+		
+		if ($verbose) {
+			$this->output = [];
+		}
+
+		$inputChunks = [];
+		if ($this->sectionSize < 5) {
+			$inputChunks = [$inputCash];
+		} else {
+			$inputChunks = array_chunk($inputCash, $this->sectionSize, true);	
+		}
+		
+
+		foreach ($inputChunks as $inputChunk) {
+			$arrayX = [];
+			$arrayY = [];
+			foreach ($inputChunk as $time => $load) {
+				foreach ($load as $value) {
+					array_push($arrayX, [$time]);
+					array_push($arrayY, $value);
+				}
+			}
+			$timeKeys = array_keys($inputChunk);
+			$regression = new LeastSquares();//PHPML
+	        $regression->train($arrayX, $arrayY);//PHPML
+
+			if ($verbose) {
+				foreach ($timeKeys as $timeKey) {
+	        		$y = $regression->predict([$timeKey]);
+	        		$coords = [
+	        			'x' => $timeKey,
+	        			'y' => ($y < 0)? 0 : $y,
+	        		];
+	        		array_push(
+		        		$this->output,
+		        		$coords
+	        		);
+				}
+			}
+
+			$start = array_shift($timeKeys);
+			$end = array_pop($timeKeys);
+			$this->predict['t'.$start.'t'.$end.'t'] = $regression;
+		}
 	}
 
 	public function train($day, $src, $left, $right, $step=1, $verbose=false) {
@@ -69,8 +122,22 @@ class LeastSquaresModel {
 				$timeParams[$j] = [$timeChunk[$j]];
 			}
 
-			$regression = new LeastSquares();
-	        $regression->train($timeParams, $loadChunk);
+			$regression = new LeastSquares();//PHPML
+	        $regression->train($timeParams, $loadChunk);//PHPML
+
+			//load observations into single model
+			// $observations = new Observations();
+   //      	$merger = [1.0];//fix from lib developer DONT TOUCH!
+   //      	for ($j = 0; $j < $chunkSize; $j++) {
+   //      		$observations->add(array_merge($merger, [$loadChunk[$j]]), $timeChunk[$j]);	
+   //      	}
+	        
+	  //       //train model
+	  //       $algorithm = new MCLeastSquares();
+	  //       $coefficients = $algorithm->regress($observations);
+
+	  //       $regression = new Linear($coefficients);
+	        // $predictedOutcome = $regression->predict(array_merge($merger, [6.0]));
 
 	        $this->predict[$label] = $regression;
 

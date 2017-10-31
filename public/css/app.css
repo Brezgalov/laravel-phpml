@@ -25,9 +25,16 @@ a {
 	text-decoration: none;
 }
 section#chart {
-	overflow-x: hidden;
+	overflow-y: hidden;
+	overflow-x: scroll;
 	margin-bottom: 100px;
 	border: 2px solid black;
 	border-radius: 5px;
 	padding: 10px;
+	position: relative;
+	min-height:400px;
+	max-width:100%;
+}
+section#chart .chart-wrapper {
+	width: 3000px;
 }
